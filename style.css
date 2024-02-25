@@ -1,0 +1,14 @@
+button {
+    border-radius: 5px;
+}
+html {
+    background-color: #1f2937;
+    color: #E5E7EB;
+    font-family: 'Roboto';
+}
+
+button {
+    margin-right: 15px;
+    font-weight: bolder;
+    font-size:small;
+}

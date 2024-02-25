@@ -8,7 +8,7 @@ function getComputerChoice() { // random number 1,2,3
         return "SCISSOR";
 }
 
-function playARound(playerSelection, computerChoice) {
+function playARound(playerSelection, computerChoice) { //return LOSE, TIE, WIN
     switch (playerSelection) {
         case "PAPER":
             {
@@ -47,34 +47,86 @@ function playARound(playerSelection, computerChoice) {
 
 }
 
-function playAGame(numberRounds) {
+function reset() {
+    const htmlYourMove = document.querySelector("#yourMove");
+    htmlYourMove.textContent = `Your move: Pending`;
+    const htmlPcMove = document.querySelector("#PcMove");
+    htmlPcMove.textContent = `Computer move: Waiting for Player's move`;
+    const htmlResult = document.querySelector("#result");
+    htmlResult.textContent = `Result: None`;
+    const htmlScore = document.querySelector("#score");
+    htmlScore.textContent = "Score: 0";
+}
+
+function showResult() {
+    const htmlScore = document.querySelector("#score");
+    let score = Number(htmlScore.textContent.split(": ")[1]);
+    let result = "";
+
+    if (score >= 3)
+        result = "Win";
+    else
+        result = "Lose";
+
+        alert(`Game is over!!\nYou ${result}.`)
+}
+
+function playAGame(playerChoice) {
 
     let score= 0;
+    let computerSelection = getComputerChoice();
+    let result = playARound(playerChoice, computerSelection);
+
+    const htmlYourMove = document.querySelector("#yourMove");
+    htmlYourMove.textContent = `Your move: ${playerChoice}`;
+
+    const htmlPcMove = document.querySelector("#PcMove");
+    htmlPcMove.textContent = `Computer move: ${computerSelection}`;
+
+    const htmlResult = document.querySelector("#result");
+    htmlResult.textContent = `Result: ${result}`;
+
+    const htmlScore = document.querySelector("#score");
+    score = Number(htmlScore.textContent.split(": ")[1]);
+
+    if (result == "WIN")
+        score += 1;
+
+    htmlScore.textContent = `Score: ${score}`;
+
+
+}
+
+function main () {
     let matches = 0;
-
-    for (let index = 0; index < numberRounds; index++) {
-        let playerSelection = prompt("Paper, Rock, Scissor:").trim().toUpperCase();
-        if (playerSelection === "PAPER" || playerSelection === "ROCK" || playerSelection === "SCISSOR") {
-            let computerSelection = getComputerChoice();
-            let result = playARound(playerSelection, computerSelection);
-
-            if (result == "WIN")
-                score += 1;
-            matches += 1;
-
-            alert(`Your choice ${playerSelection} \nComputer choice: ${computerSelection} \nResult: ${result} \nFinal score: ${score}/${matches}`)
-
-        } else {
-            alert("Wrong input!!! Try again.")
+    const scissorButton = document.querySelector("#scissor");
+    scissorButton.addEventListener("click", () => {
+        playAGame("SCISSOR");
+        matches++;
+        if(matches == 5) {
+            showResult();
+            reset();
+            matches = 0;
         }
+    
+    });
+    const rockButton = document.querySelector("#rock");
+    rockButton.addEventListener("click", () => {playAGame("ROCK");
+    matches++;
+    if(matches == 5) {
+        showResult();
+        reset();
+        matches = 0;
     }
+    });
+    const paperButton = document.querySelector("#paper");
+    paperButton.addEventListener("click", () => {playAGame("PAPER");
+    matches++;
+    if(matches == 5) {
+        showResult();
+        reset();
+        matches = 0;
+    }});
 }
 
-
-let rounds = prompt("How many rounds?");
-if (isNaN(parseInt(rounds))) {
-    alert("Wrong INput! Try again!.")
-} else {
-    playAGame(parseInt(rounds));
-}
-
+main();
