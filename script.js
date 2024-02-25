@@ -68,7 +68,7 @@ function showResult() {
     else
         result = "Lose";
 
-        alert(`Game is over!!\nYou have ${score} and${result}.`)
+        alert(`Game is over!!\nYou have ${score} points and ${result}.`)
 }
 
 function playAGame(playerChoice) {
